@@ -193,8 +193,10 @@ const Inicio = (
               navigate.navigate('Desenrrampe', {dt:viaje, usuario:usuario, ubicacion:ubicacion, nameUser:nameUser})
             break;
            case 10:
-              if(dt.cerrado ==0)
+               //console.log(viaje)
+              if(viaje.cerrado ==0)
               {
+                //console.log(viaje)
                 navigate.navigate('Liberacion', {dt:viaje, usuario:usuario, ubicacion:ubicacion, nameUser:nameUser})
               }
               else
