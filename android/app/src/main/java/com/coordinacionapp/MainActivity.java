@@ -6,6 +6,9 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import android.os.Bundle;
 
+// on top of your file
+import android.content.Intent;
+
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +37,11 @@ public class MainActivity extends ReactActivity {
         // If you opted-in for the New Architecture, we enable the Fabric Renderer.
         DefaultNewArchitectureEntryPoint.getFabricEnabled());
   }
-  
+
+    @Override
+   public void onNewIntent(Intent intent) {
+     super.onNewIntent(intent);
+     setIntent(intent);
 }
+}
+

@@ -3,10 +3,7 @@ import {View, Text, ImageBackground, StyleSheet, TextInput, FlatList, Pressable,
 import PlataformaBox from '../components/PlataformaBox'
 import Buscador from '../components/Buscador'
 import axios from 'axios'
-import DtBox from '../components/DtBox'
 import { useNavigation } from '@react-navigation/native';
-import SlideButton from 'rn-slide-button';
-
 
 const Inicio = (
   props

@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, StyleSheet, Pressable, Alert, ImageBackground, Image, ActivityIndicator, BackHandler} from 'react-native'
-import { TextInput } from 'react-native-gesture-handler';
+//import { TextInput } from 'react-native-gesture-handler';
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HelperText, TextInput } from 'react-native-paper';
+import { fromLeft } from 'react-navigation-transitions';
+
 const Login = (
   
 ) => {
@@ -105,6 +108,15 @@ const Login = (
       // saving error
     }
   } 
+
+  const hasErrorsUser = () =>  //errores de retorno para el input de usuarios
+  {
+    if(email == '')
+    {
+      return 'hola'
+    }
+  };
+
   return (
   <ImageBackground source={require('../assets/img/login.png')} style={{flex:1}}>
     <View style={styles.container}>
@@ -124,13 +136,13 @@ const Login = (
       </View>
       <View style={{backgroundColor: 'white', borderTopRightRadius:20, borderTopLeftRadius:20}}>
           <Text style={{textAlign:'center', paddingVertical:35, textTransform:'uppercase', color:'#1A1E3A', fontSize:25, letterSpacing:2}}>Bienvenido</Text>
-          <TextInput placeholder='USUARIO' keyboardType='email-address' value={email} placeholderTextColor={'#1A1E3A'} style={styles.input} onChangeText={(newText)=> {setEmail(newText)}} />
-          <TextInput secureTextEntry={true} value={password} placeholder='CONTRASEÑA' placeholderTextColor={'#1A1E3A'} style={styles.input} onChangeText={(newText)=> {setPassword(newText)}} />
+          <TextInput label='Usuario' keyboardType='email-address' value={email} selectionColor='#1D96F1'  activeUnderlineColor='#1D96F1' style={styles.input} onChangeText={(newText)=> {setEmail(newText)}} />
+          <TextInput secureTextEntry={true} value={password} label='Contraseña' selectionColor='#1D96F1' activeUnderlineColor='#1D96F1'  style={styles.input} onChangeText={(newText)=> {setPassword(newText)}} />
           <Pressable onPress={()=>{login()}} style={styles.button}>
              <Text style={[styles.text,{color:'white', fontSize:15}]}>Iniciar sesión</Text>
              {
                clicked ? 
-               <View>
+               <View style={{marginLeft:50}}>
                   <ActivityIndicator size="large" color="white" style={{ transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }] }} />
                </View>
                :null
@@ -156,7 +168,7 @@ const styles = StyleSheet.create({
      margin:5,
      borderRadius:15,
      color:'#1A1E3A',
-     backgroundColor:'#F5F7F8',
+     backgroundColor:'transparent',
      marginHorizontal:35,
    },
    button:

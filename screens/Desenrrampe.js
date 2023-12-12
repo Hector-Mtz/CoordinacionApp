@@ -17,6 +17,8 @@ import SwipeButton from 'rn-swipe-button';
 //importar img
 import arrow_rigth from '../assets/img/arrow_rigth.png';
 import arrow_left from '../assets/img/arrow_left.png';
+//
+import ReceiveSharingIntent from 'react-native-receive-sharing-intent';
 
 const Desenrrampe = (props) => 
 {
@@ -564,9 +566,33 @@ const Desenrrampe = (props) =>
        }    
      }
 
-     //Select Documento
+     //Recibimiento de documentos externos
      const [documento, setDocumento] = useState(null);
      const [tipo_campo_id, setTipoCampoId] = useState(null);
+     useEffect(()=> 
+     {
+      ReceiveSharingIntent.getReceivedFiles((data:any)=> 
+      {
+        console.log(data);
+        setDocumento(data[0])
+        setTipoCampoId(14) //el valor delc ampo
+      },
+      (err:any)=>
+      {
+        console.log(err);
+      });
+    
+      /*
+      return () => 
+      {
+        ReceiveSharingIntent.clearReceivedFiles();
+      }
+      */
+      
+     },[documento])
+
+     //Select Documento
+  
      const selectDocument = async (id) => 
      {
          setTipoCampoId(id);
@@ -576,6 +602,8 @@ const Desenrrampe = (props) =>
                  type:[DocumentPicker.types.csv, DocumentPicker.types.docx, DocumentPicker.types.pdf],
                  copyTo:'documentDirectory',
              });
+
+             console.log(file)
              setDocumento(file[0]);
          } 
          catch (error) 
@@ -633,11 +661,23 @@ const Desenrrampe = (props) =>
           const formData = new FormData();
           //añadimos la info a enviar al formadata
           formData.append('tipo_campo_file', tipo_campo_id);
-          formData.append('file',{
-            uri:documento.fileCopyUri,
-            type:documento.type,
-            name:documento.name,
-          });
+          //Validacion para seccionar el documento dependiendo
+          if(documento.fileCopyUri) //esto es si se selecciona dentro de la app
+          {
+            formData.append('file',{
+              uri:documento.fileCopyUri,
+              type:documento.type,
+              name:documento.name,
+            });
+          }
+          else //es externo
+          {
+            formData.append('file',{
+              uri:documento.contentUri,
+              type:documento.mimeType,
+              name:documento.fileName,
+            });
+          }
 
           //formData.append('dt',props.route.params.dt.dt_id);
           formData.append('usuario',props.route.params.usuario);
@@ -647,6 +687,7 @@ const Desenrrampe = (props) =>
           formData.append('status_id',props.route.params.dt.status_id);
           formData.append('confirmacion_id', props.route.params.dt.id);
           //console.log(valores)
+
           try 
           {
             axios.post('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/valoresLiberacion',
@@ -669,6 +710,7 @@ const Desenrrampe = (props) =>
                   }).
                 then(response => 
                 {
+                  console.log(response.data)
                   setContador(1);
                   setDate(new Date());
                   setValores([]);
@@ -702,7 +744,7 @@ const Desenrrampe = (props) =>
           } 
           catch (error) 
           {
-            
+            console.log(err.response.data)
           }
          //console.log(valores) 
        }
@@ -1490,7 +1532,17 @@ const Desenrrampe = (props) =>
                               {
                                 documento !== null ?
                                 <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                   <Text style={[styles.text,{color:'white'}]}>{documento.name}</Text>
+                                  {
+                                    documento.name ? 
+                                      <View>
+                                        <Text style={[styles.text,{color:'white'}]}>{documento.name}</Text>
+                                      </View>
+                                    :
+                                    <View>
+                                      <Text style={[styles.text,{color:'white'}]}>{documento.fileName}</Text>
+                                    </View>
+                                  }
+                                   
                                 </View> 
                                 : null
                               }

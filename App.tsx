@@ -15,6 +15,7 @@ import Documentacion from './screens/Documentacion';
 import Enrrampar from './screens/Enrrampar';
 import Desenrrampe from './screens/Desenrrampe';
 import Liberacion from './screens/Liberacion';
+import Animated from 'react-native-reanimated';
 
 const Drawer = createDrawerNavigator();
 
