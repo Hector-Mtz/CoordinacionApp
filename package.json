@@ -36,6 +36,7 @@
     "react-native-signature-canvas": "^4.5.1",
     "react-native-table-component": "^1.2.2",
     "react-native-toggle-element": "^2.0.1",
+    "react-native-vector-icons": "^10.0.2",
     "react-native-webview": "^13.3.0",
     "react-navigation-transitions": "^1.0.12",
     "rn-fetch-blob": "^0.12.0",
