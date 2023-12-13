@@ -11,12 +11,9 @@ import axios from 'axios'
 import IconEnRiesgo from '../components/IconEnRiesgo';
 import IconATiempo from '../components/IconATiempo';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  Pusher,
-  PusherMember,
-  PusherChannel,
-  PusherEvent,
-} from '@pusher/pusher-websocket-react-native';
+import { HelperText } from 'react-native-paper';
+
+
 //importar img
 import arrow_left from '../assets/img/arrow_left.png'
 //ES LA PANTALLA DE A TIEMPO
@@ -661,6 +658,7 @@ const Llegada = (props) => {
                                 }
                                 //console.log(items)
                              }} />
+                             
                              {
                               /*
                                 <Pressable style={styles.buttonPhone} onPress={() => {
@@ -672,6 +670,7 @@ const Llegada = (props) => {
                              }
                           </View>
                        </View>
+                       
                        :null
                      }
                    </View>

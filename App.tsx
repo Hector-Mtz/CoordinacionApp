@@ -7,6 +7,7 @@ import {
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 //Pantallas finales
 import Login from './screens/Login';
 import Inicio from './screens/Inicio';
@@ -15,108 +16,47 @@ import Documentacion from './screens/Documentacion';
 import Enrrampar from './screens/Enrrampar';
 import Desenrrampe from './screens/Desenrrampe';
 import Liberacion from './screens/Liberacion';
-import Animated from 'react-native-reanimated';
 
 const Drawer = createDrawerNavigator();
-
-const config = {
-  animation: 'spring',
-  config: {
-    stiffness: 1000,
-    damping: 500,
-    mass: 3,
-    overshootClamping: true,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01,
-  },
-};
+const Stack = createStackNavigator();
 
 function App(): JSX.Element {
 
+  const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: false,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+
   return (
    <NavigationContainer>
-      <Drawer.Navigator initialRouteName='Login'  screenOptions={{
+      <Stack.Navigator initialRouteName='Login' 
+      screenOptions={{
         headerShown:false,
-       drawerStyle:{
-        backgroundColor:'white',
-       },
-       drawerInactiveTintColor:'#1D96F1',  
-       headerTintColor:'white' ,
+        animationEnabled:true,
+        animationTypeForReplace:'pop',
+        presentation:'modal',
+        transitionSpec:{
+          open:config,
+          close:config
+        },
+        gestureEnabled:true, 
+        gestureDirection:'horizontal'
       }} >
-        <Drawer.Group screenOptions={
-         {
-          drawerStatusBarAnimation:'slide',
-          presentation: 'modal',
-         }
-        }>
-          <Drawer.Screen  options={{
-            headerShown:false,
-            transitionSpec: {
-              open: config,
-              close: config,
-            },
-            }} name='Login' component={Login}  />
-
-           <Drawer.Screen options={{
-              headerShown:false,
-               title:'',
-               headerTransparent: true,
-               drawerActiveTintColor:'#1D96F1',  
-               transitionSpec: {
-                open: config,
-                close: config,
-              },
-             }} name='Inicio' component={Inicio}    />
-
-            <Drawer.Screen options={{
-              headerShown:false,
-               title:'',
-               headerStyle:
-               {
-                 backgroundColor:'white'
-               },
-               headerTintColor:'#0A0F2C',
-             }} name='Llegada' component={Llegada}    />
-           <Drawer.Screen options={{
-               headerShown:false,
-               title:'',
-               headerStyle:
-               {
-                 backgroundColor:'white'
-               },
-               headerTintColor:'#0A0F2C',
-             }} name='Documentacion' component={Documentacion}/>
-           <Drawer.Screen options={{
-               headerShown:false,
-               title:'',
-               headerStyle:
-               {
-                 backgroundColor:'white'
-               },
-               headerTintColor:'#0A0F2C',
-             }} name='Enrrampar' component={Enrrampar}    />
-   
-             <Drawer.Screen options={{
-               headerShown:false,
-               title:'',
-               headerStyle:
-               {
-                 backgroundColor:'white'
-               },
-               headerTintColor:'#0A0F2C',
-             }} name='Desenrrampe' component={Desenrrampe}    />
-   
-             <Drawer.Screen options={{
-               headerShown:false,
-               title:'',
-               headerStyle:
-               {
-                 backgroundColor:'white'
-               },
-               headerTintColor:'#0A0F2C',
-             }} name='Liberacion' component={Liberacion}    />
-          </Drawer.Group>
-      </Drawer.Navigator>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name='Inicio' component={Inicio} />
+        <Stack.Screen name='Llegada' component={Llegada} />
+        <Stack.Screen name='Documentacion' component={Documentacion} />
+        <Stack.Screen name='Enrrampar' component={Enrrampar} />
+        <Stack.Screen name='Desenrrampe' component={Desenrrampe} />
+        <Stack.Screen name='Liberacion' component={Liberacion} />
+      </Stack.Navigator>
    </NavigationContainer>
   );
 }

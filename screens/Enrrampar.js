@@ -106,6 +106,7 @@ const Enrrampar = (props) => {
          ).catch(err => 
            {
              console.log(err.response)
+             console.log('aqui es error')
            })
 
          //solicitamos el telefono dependiendo el dt que tengamos
@@ -120,7 +121,8 @@ const Enrrampar = (props) => {
           }
         ).catch(err => 
           {
-            console.log(err.response.data)
+            //console.log(err.response.data)
+            setTelefono(null)
           });
        }
      },[props.route.params.dt]);

@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HelperText, TextInput, Button } from 'react-native-paper';
-import { fromLeft } from 'react-navigation-transitions';
+
 
 const Login = (
   
@@ -34,7 +34,6 @@ const Login = (
   const [clicked, setClicked] = useState(false);
   const login = async () => 
   {
-    console.log('hola')
     setClicked(true);
     if(email === '' ||  password === '')
     {
