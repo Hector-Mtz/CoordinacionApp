@@ -111,6 +111,7 @@ const Login = (
 
   const hasErrorsUser = () =>  //errores de retorno para el input de usuarios
   {
+    /*
     if(!email.includes('@'))
     {
       return true;
@@ -119,10 +120,12 @@ const Login = (
     {
       return false
     }
+    */
   };
 
   const hasErrorsPass = () => 
   {
+    /*
     if(password.length <= 4)
     {
       return true
@@ -131,6 +134,7 @@ const Login = (
     {
       return false
     }
+    */
   }
 
   return (
@@ -153,13 +157,7 @@ const Login = (
       <View style={{backgroundColor: 'white', borderTopRightRadius:20, borderTopLeftRadius:20}}>
           <Text style={{textAlign:'center', paddingVertical:35, textTransform:'uppercase', color:'#1A1E3A', fontSize:25, letterSpacing:2}}>Bienvenido</Text>
           <TextInput label='Usuario' keyboardType='email-address' value={email} selectionColor='#1D96F1'  activeUnderlineColor='#1D96F1' style={styles.input} onChangeText={(newText)=> {setEmail(newText)}} />
-          <HelperText type="error" style={{marginHorizontal:25}} visible={hasErrorsUser()}>
-             Email no valido, requiere "@".
-          </HelperText>
           <TextInput secureTextEntry={true} value={password} label='Contraseña' selectionColor='#1D96F1' activeUnderlineColor='#1D96F1'  style={styles.input} onChangeText={(newText)=> {setPassword(newText)}} />
-          <HelperText type="error" style={{marginHorizontal:25}} visible={hasErrorsPass()}>
-             La contraseña debe ser mayor a 4 carácteres.
-          </HelperText>
           <Button mode="contained"  onPress={()=>{login()}} buttonColor="#1D96F1" loading={clicked} icon='login' style={styles.button}>
              Iniciar sesión
           </Button>
