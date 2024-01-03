@@ -698,6 +698,7 @@ const Desenrrampe = (props) =>
              confirmacion_id:props.route.params.dt.id,
              status_id: props.route.params.dt.status_id,
              usuario:props.route.params.usuario,
+             dt:props.route.params.dt.dt_id
             }}).then(response => 
              {
                 //console.log(busquedaProducto)

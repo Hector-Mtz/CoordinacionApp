@@ -60,7 +60,7 @@ const Llegada = (props) => {
   const [clicked, setIsClicked] = useState(false);
   useEffect(() => 
   {
-    
+    //console.log(props.route.params.dt)
     if(props.route.params.dt.status_id == 5)
     {
        setIsEnabled(true)
@@ -229,7 +229,8 @@ const Llegada = (props) => {
            confirmacion_id:props.route.params.dt.id, //es el id de la confirmacion no del id
            tipo:tipo,
            usuario:props.route.params.usuario,
-           confirmacion: props.route.params.dt.confirmacion
+           confirmacion: props.route.params.dt.confirmacion,
+           dt: props.route.params.dt.dt_id
           }}).then(response => 
            {
               //console.log(response.data);

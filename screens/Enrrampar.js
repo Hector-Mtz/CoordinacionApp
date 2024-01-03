@@ -93,7 +93,7 @@ const Enrrampar = (props) => {
     {
       if(props.route.params.dt)
        {
-         //console.log(props.route.params.dt)
+        // console.log(props.route.params.dt.dt_id)
          axios.get('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/camposByStatus',{
            params:{
             status_id:props.route.params.dt.status_id
@@ -360,6 +360,7 @@ const Enrrampar = (props) => {
                     formData.append('confirmacion_id', props.route.params.dt.id);
                     formData.append('confirmacion',props.route.params.dt.confirmacion);
                     formData.append('usuario',props.route.params.usuario);
+                    formData.append('dt', props.route.params.dt.dt_id);
                     //Primer peticion
                     await axios.post('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/valoresEnrrampado', 
                     {params:
@@ -368,6 +369,7 @@ const Enrrampar = (props) => {
                       usuario: props.route.params.usuario,
                       confirmacion: props.route.params.dt.confirmacion,
                       confirmacion_id:props.route.params.dt.id,
+                      dt:props.route.params.dt.dt_id
                     }})
                    .then(res => 
                      {

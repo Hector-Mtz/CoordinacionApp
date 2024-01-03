@@ -356,6 +356,7 @@ const Documentacion = (props) =>
         formData.append('confirmacion_id', props.route.params.dt.id);
         formData.append('confirmacion',props.route.params.dt.confirmacion);
         formData.append('usuario',props.route.params.usuario);
+        formData.append('dt', props.route.params.dt.dt_id);
 
         //console.log(formData);
         //setModalGuardando(true);
