@@ -20,7 +20,7 @@ const Enrrampar = (props) => {
     const goBack = () => 
     {
       setPhotos([]);
-      setContador(1);
+      setContador(0);
       setCampos([]);
       setValores([]);
       setChangeSlide(false);
@@ -148,7 +148,7 @@ const Enrrampar = (props) => {
     //Camara
     const [photos, setPhotos] = useState([]); //esta es la foto que se almacena (hay que convertirlo a array)
     const [selectedImage, setSelectedImage] = useState(null);
-    const [contador, setContador] = useState(1);
+    const [contador, setContador] = useState(0);
     //Variables para el modal de las fotos
     const [modalShowFotos, setModalShowFotos] = useState(false);
     const [campoFotoActual, setCampoFotoActual] = useState(null);
@@ -165,6 +165,49 @@ const Enrrampar = (props) => {
 
   const handleCameraLaunch = async (id) => 
   {
+    const options = {
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+      selectionLimit: 5
+    };
+    await launchImageLibrary(options, (response)=>
+    {
+      if (response.didCancel) 
+      {
+        console.log('User cancelled image picker');
+      } 
+      else if (response.error) 
+      {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else //si se seleccionaron fotos
+      {
+        let contadorTemp = 0;
+        if(contador !== 0)
+        {
+           contadorTemp = contador;
+        }
+
+        for (let index = 0; index < response.assets.length; index++) 
+        {
+          const element = response.assets[index];
+          contadorTemp++;
+
+          let imageUri = element.uri;
+          let newFotoObj = element;
+          newFotoObj.campo_id = id
+          newFotoObj.id = contadorTemp;
+
+          setSelectedImage(newFotoObj);
+          //console.log(newFotoObj);
+        }
+
+        setContador(contadorTemp);
+      }
+    });
+    
+    /*
     setModalGuardando(false);
     try {
       setModalGuardando(false);
@@ -223,6 +266,7 @@ const Enrrampar = (props) => {
         //console.log(imageUri);
       }
     });
+    */
   }
 
     const borrarFoto = (id) => 
@@ -490,6 +534,7 @@ const Enrrampar = (props) => {
          try 
          {
             navigate.navigate('Login');
+            setContador(0);
             setShowLogin(false);
          } catch (error) 
          {
