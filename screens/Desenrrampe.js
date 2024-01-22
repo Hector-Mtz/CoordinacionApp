@@ -316,6 +316,13 @@ const Desenrrampe = (props) =>
 
      //Funciones de camara
      const [contador, setContador] = useState(1);
+     const [openModalPhotos, setOpenModalPhotos] = useState(false);
+     const [itemActual, setItemActual] = useState(null);
+     const openCarrusel = (item) =>
+     {
+       setOpenModalPhotos(true);
+       setItemActual(item);
+     }
      
      const takePicture = async (item) => 
      {
@@ -388,6 +395,14 @@ const Desenrrampe = (props) =>
             setModalGuardando(false);
           }
         });
+     }
+
+
+     const borrarFoto = (id) => 
+     {
+       let newEvidencias = itemActual.evidencias.filter(photo => photo.id !== id)
+       itemActual.evidencias = newEvidencias;
+       //setPhotos(photos.filter(photo => photo.id !== id ));
      }
 
      const guardarIncidencias = () => 
@@ -959,6 +974,7 @@ const Desenrrampe = (props) =>
                    </Text>  
                 </View>
         </Modal>
+
        <Modal visible={modalCuadre} animationType="slide">
           <View style={{marginVertical:30}}>
             {
@@ -1271,7 +1287,7 @@ const Desenrrampe = (props) =>
                                                {
                                                 item.tipo_incidencia_id !== 1 ?
                                                  <View style={styles.cell}>
-                                                   <Pressable onPress={()=>{takePicture(item) }}  style={[{backgroundColor:'orange', justifyContent:'center', alignItems:'center',paddingVertical:15, borderRadius:30}]}>
+                                                   <Pressable onPress={()=>{openCarrusel(item) }}  style={[{backgroundColor:'orange', justifyContent:'center', alignItems:'center',paddingVertical:15, borderRadius:30}]}>
                                                      <Image style={{width:26, height:20,}} source={require('../assets/img/icono-foto.png')} />
                                                    </Pressable>
                                                  </View>
@@ -1345,6 +1361,62 @@ const Desenrrampe = (props) =>
                         </View>
                       </View>
                     </View>
+                </Modal>
+                <Modal visible={openModalPhotos} animationType='slide'>
+                  <View>
+                     <View style={{justifyContent:'center',alignContent:'center', margin:15}}>
+                         <Pressable onPress={()=>{setOpenModalPhotos(false)}}>
+                              <Image style={{width:30, height:20}} source={require('../assets/img/flecha_back.png')} />
+                          </Pressable>
+                     </View>
+                     <View style={{marginTop:15}}>
+                        <Pressable style={{flex: 0,
+                              backgroundColor: '#697FEA',
+                              borderRadius: 30,
+                              paddingVertical: 12,
+                              paddingHorizontal: 45,
+                              alignSelf: 'center',
+                              margin: 20}} 
+                            onPress={()=>
+                             {
+                               takePicture(itemActual)
+                             }}>
+                           <Image style={{width:35, height:27}} source={require('../assets/img/icono-foto.png')} />
+                         </Pressable>
+                         {
+                           itemActual !== null ?
+                           <View>    
+                              {
+                                itemActual.evidencias.length !== 0 ?
+                                <View style={{marginTop:50}}>
+                                  <FlatList 
+                                   scrollEnabled
+                                   data={itemActual.evidencias}
+                                   keyExtractor={(item) => item.id }
+                                   horizontal={true}
+                                   renderItem={({item}) =>             
+                                   {
+                                     return (
+                                           <View style={{marginHorizontal:5}}>
+                                              <Pressable onPress={()=>{borrarFoto(item.id)}}
+                                              style={{backgroundColor:'#F25B77', 
+                                              borderRadius:100, padding:8, position:'absolute',
+                                              zIndex:2
+                                              }}>
+                                                 <Image style={{width:15, height:18}} source={require('../assets/img/eliminar.png')} />
+                                              </Pressable>
+                                              <Image style={{width:300, height:300}} source={{ uri: item.uri }}/>
+                                           </View>     
+                                     )
+                                   }}
+                               />
+                           </View>
+                           : null
+                         }
+                     </View>
+                     :null }
+                  </View>
+                  </View>
                 </Modal>
                 {
                     productoSeleccionado !== null ?
