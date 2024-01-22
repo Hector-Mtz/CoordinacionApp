@@ -25,6 +25,7 @@ const Documentacion = (props) =>
     setContador(1);
     setSelectedImage(null);
     setModalGuardando(false);
+    guardarOcsSaveIt(false);
   }
    const [telefono, setTelefono] = useState(null);
    //Variable de almacenaje de campos dinamicos
@@ -234,7 +235,115 @@ const Documentacion = (props) =>
       setModalGuardando(false)
     }
    
-  },[modalGuardando])
+  },[modalGuardando]);
+
+  //ocs
+  const [ocsSaveIt, guardarOcsSaveIt] = useState(false); //bandera de ocs
+  const [modalVisibleOcs, setModalVisibleOcs] = useState(false);
+  const [ocs, setOcs] = useState([]);
+  const [newOcs, setNewOcs] = useState([]);
+  const consultarOcs = () => 
+  {
+    try 
+    {
+        //console.log(props.route.params.dt);
+        axios.get('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/getOcsApi', {params:{
+          id: props.route.params.dt.id,
+         }}).then(response => 
+          {
+             //console.log(response.data);
+             setOcs(response.data)
+             try
+             {
+                  setModalVisibleOcs(true);
+             } 
+             catch (error) {
+              
+             }
+          }).catch(err => 
+          {
+            console.log(err)
+          });
+
+    } 
+    catch (error) 
+    {
+      
+    }
+  }
+
+  const guardarOcs = () => 
+  {
+    //console.log(newOcs);
+    console.log(ocs)
+    if(ocs.length !== 0)
+    {
+       let arrayOcsFaltantes = [];
+       for (let index = 0; index < ocs.length; index++) 
+       {
+         const confirmacion = ocs[index];
+         if(confirmacion.ocs.length == 0)
+         {
+           arrayOcsFaltantes.push(confirmacion)
+         }
+       }
+
+      if(arrayOcsFaltantes.length !== 0)
+      {
+        Alert.alert('ERROR', "Hay confirmaciones faltantes de OC's, favor de comunicarse con el administrador o el customer encargado.",
+        [
+         {text:'Aceptar'}
+        ])
+      }
+      else
+      {
+        if(newOcs.length > 0 )
+        {
+           try 
+           {
+            axios.get('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/saveFacturados',{
+              params:{
+               ocs:newOcs
+              }
+            }).then(
+              response => {
+                //console.log(response.data)
+                setModalVisibleOcs(false)
+                Alert.alert('OK', 'OCS Guardadas',
+                [
+                 {text:'Aceptar'}
+                ])
+                guardarOcsSaveIt(true);
+                setNewOcs([]);
+              }
+              ).catch(err => 
+              {
+                console.log(err)
+              })
+           } 
+           catch (error) 
+           {
+            
+           }
+        }
+        else
+        {
+          Alert.alert('ERROR', 'Las OCS deben tener su cantidad',
+           [
+            {text:'Aceptar'}
+           ])
+        }
+      }
+    }
+    else
+    {
+      Alert.alert('ERROR', 'No hay OCS asociadas',
+      [
+       {text:'Aceptar'}
+      ])
+    }
+  }
+
 
   const siguiente = async () => 
   {
@@ -254,7 +363,7 @@ const Documentacion = (props) =>
     }
     else
     {
-      if(ocs.length > 0)
+      if(ocs.length > 0 && ocsSaveIt == true)
       {
          let arrayFotos = [];
          let arratTemporal = []
@@ -455,109 +564,6 @@ const Documentacion = (props) =>
     }
   }
 
-  const [modalVisibleOcs, setModalVisibleOcs] = useState(false);
-  const [ocs, setOcs] = useState([]);
-  const [newOcs, setNewOcs] = useState([]);
-  const consultarOcs = () => 
-  {
-    try 
-    {
-        //console.log(props.route.params.dt);
-        axios.get('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/getOcsApi', {params:{
-          id: props.route.params.dt.id,
-         }}).then(response => 
-          {
-             //console.log(response.data);
-             setOcs(response.data)
-             try
-             {
-                  setModalVisibleOcs(true);
-             } 
-             catch (error) {
-              
-             }
-          }).catch(err => 
-          {
-            console.log(err)
-          });
-
-    } 
-    catch (error) 
-    {
-      
-    }
-  }
-
-  const guardarOcs = () => 
-  {
-    //console.log(newOcs);
-    if(ocs.length !== 0)
-    {
-       let arrayOcsFaltantes = [];
-       for (let index = 0; index < ocs.length; index++) 
-       {
-         const confirmacion = ocs[index];
-         if(confirmacion.ocs.length == 0)
-         {
-           arrayOcsFaltantes.push(confirmacion)
-         }
-       }
-
-      if(arrayOcsFaltantes.length !== 0)
-      {
-        Alert.alert('ERROR', "Hay confirmaciones faltantes de OC's, favor de comunicarse con el administrador o el customer encargado.",
-        [
-         {text:'Aceptar'}
-        ])
-      }
-      else
-      {
-        if(newOcs.length > 0 )
-        {
-           try 
-           {
-            axios.get('https://coordinaciondestinoweb-4mklxuo4da-uc.a.run.app/api/saveFacturados',{
-              params:{
-               ocs:newOcs
-              }
-            }).then(
-              response => {
-                //console.log(response.data)
-                setModalVisibleOcs(false)
-                Alert.alert('OK', 'OCS Guardadas',
-                [
-                 {text:'Aceptar'}
-                ])
-                setNewOcs([]);
-              }
-              ).catch(err => 
-              {
-                console.log(err)
-              })
-           } 
-           catch (error) 
-           {
-            
-           }
-        }
-        else
-        {
-          Alert.alert('ERROR', 'Las OCS deben tener su cantidad',
-           [
-            {text:'Aceptar'}
-           ])
-        }
-      }
-    }
-    else
-    {
-      Alert.alert('ERROR', 'No hay OCS asociadas',
-      [
-       {text:'Aceptar'}
-      ])
-    }
-  }
-
   const [showLogin, setShowLogin] = useState(false);
   const mostrarLogo = () => 
   {
@@ -570,6 +576,13 @@ const Documentacion = (props) =>
    {
       navigate.navigate('Login');
       setShowLogin(false);
+      guardarOcsSaveIt(true);
+      setCampos([]);
+      setPhotos([]);
+      setValores([]);
+      setContador(1);
+      setSelectedImage(null);
+      setModalGuardando(false);
    } catch (error) 
    {
      
